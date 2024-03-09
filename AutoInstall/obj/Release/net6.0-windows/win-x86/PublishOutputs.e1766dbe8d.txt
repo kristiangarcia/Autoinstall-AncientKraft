@@ -1,0 +1,7 @@
+C:\Users\krist\Desktop\AutoInstall.pdb
+C:\Users\krist\Desktop\D3DCompiler_47_cor3.dll
+C:\Users\krist\Desktop\PenImc_cor3.dll
+C:\Users\krist\Desktop\PresentationNative_cor3.dll
+C:\Users\krist\Desktop\vcruntime140_cor3.dll
+C:\Users\krist\Desktop\wpfgfx_cor3.dll
+C:\Users\krist\Desktop\AutoInstall.exe
