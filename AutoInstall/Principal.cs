@@ -25,7 +25,7 @@ namespace AutoInstall
         public string? textoLabel4;
         //Program version
         private string program_version = ""; // versión actual del programa
-        private string program_pastebinUrl = "https://gist.github.com/Kristiansito/93a6940479e2fb1ecb9acc79dcae3ac0/raw"; // URL de pastebin del programa
+        private string program_pastebinUrl = "https://gist.github.com/Kristiansito/9c40f03bcbcce524e2fac36503524e9b/raw"; // URL de pastebin del programa
         private string programUpdateUrl = ""; // URL de descarga de actualización
         private string newProgramVersion = "";
 
@@ -933,8 +933,8 @@ namespace AutoInstall
                 {
                     <= 8 => 4,      // Si la RAM es 8GB o menos, asigna 4
                     <= 12 => 6,     // Si la RAM es más de 8GB y hasta 12GB, asigna 6
-                    < 32 => 10,     // Si la RAM es más de 12GB y menos de 32GB, asigna 10
-                    _ => 12         // Para 32GB o más, asigna 12
+                    < 23 => 10,     // Si la RAM es más de 12GB y menos de 24GB, asigna 10
+                    _ => 12         // Para 23GB o más, asigna 12
                 };
 
                 return $"-Xmx{javaMemory}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
