@@ -35,8 +35,8 @@ namespace AutoInstall
         private string modpackUpdateUrl = ""; // URL de descarga de actualización
         private string newModpackVersion = "";
 
-        //Forge libraries + InfernoLand version
-        private string libraries_Url = "https://www.dropbox.com/scl/fi/8c0c7sz9zoax19tmitq5h/forge-1.18.2-libraries-infernoland.zip?rlkey=2te2xdrntjqb43e0aweud29rx&dl=1"; // URL de dropbox de las libraries de Forge + Versions
+        //Forge libraries + AncientKraft version
+        private string libraries_Url = "https://www.dropbox.com/scl/fi/8c0c7sz9zoax19tmitq5h/forge-1.18.2-libraries-AncientKraft.zip?rlkey=2te2xdrntjqb43e0aweud29rx&dl=1"; // URL de dropbox de las libraries de Forge + Versions
 
         private string selectedPath = ""; // Variable para almacenar la ruta seleccionada por el usuario
         private System.Windows.Forms.Timer animationTimer;
@@ -256,7 +256,7 @@ namespace AutoInstall
                     string downloadsFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + "\\Downloads";
 
                     // Crear el nombre del nuevo archivo
-                    string newProgramFileName = $"Asistente de InfernoLand v{newProgramVersion}.exe";
+                    string newProgramFileName = $"Asistente de AncientKraft v{newProgramVersion}.exe";
 
                     // Guardar el nuevo programa en la carpeta de Descargas
                     string newProgramFilePath = Path.Combine(downloadsFolderPath, newProgramFileName);
@@ -281,7 +281,7 @@ namespace AutoInstall
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            string url = "https://discord.gg/ctf8jmquPp";
+            string url = "https://discord.gg/UJZRrcUFMj";
             System.Diagnostics.Process.Start("cmd", "/c start " + url);
         }
 
@@ -313,7 +313,7 @@ namespace AutoInstall
             if (string.IsNullOrEmpty(selectedPath))
             {
                 // Si el usuario no ha seleccionado una ruta, usa la ruta predeterminada
-                selectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_infernoland");
+                selectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_AncientKraft");
             }
             if (!string.IsNullOrEmpty(selectedPath))
             {
@@ -478,10 +478,10 @@ namespace AutoInstall
             linkMoreDetails.Location = new Point(progressBarUI.Left, progressBarUI.Top - linkMoreDetails.Height - 10);
             Controls.Add(linkMoreDetails);
 
-            //Crear carpeta _infernoland en caso de que la ruta sea por defecto
-            if (selectedPath == Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_infernoland"))
+            //Crear carpeta _AncientKraft en caso de que la ruta sea por defecto
+            if (selectedPath == Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_AncientKraft"))
             {
-                // Verificar si la carpeta _infernoland ya existe
+                // Verificar si la carpeta _AncientKraft ya existe
                 if (!Directory.Exists(selectedPath))
                 {
                     // Si no existe, crear la carpeta
@@ -884,29 +884,29 @@ namespace AutoInstall
             var json = File.ReadAllText(perfilesPath);
             var jsonObj = JObject.Parse(json);
 
-            // Crear el nuevo objeto JSON para "InfernoLand"
+            // Crear el nuevo objeto JSON para "AncientKraft"
             var newProfile = new JObject
             {
                 ["created"] = "2024-03-08T20:18:06.251Z",
-                ["gameDir"] = @"C:\Users\krist\AppData\Roaming\.minecraft\_infernoland",
+                ["gameDir"] = @"C:\Users\krist\AppData\Roaming\.minecraft\_AncientKraft",
                 ["icon"] = "Redstone_Block",
                 ["javaArgs"] = javaArgs,
                 ["lastUsed"] = "2024-03-08T20:31:10.859Z",
-                ["lastVersionId"] = "InfernoLand",
-                ["name"] = "InfernoLand",
+                ["lastVersionId"] = "AncientKraft",
+                ["name"] = "AncientKraft",
                 ["type"] = "custom"
             };
 
             // Los perfiles están en una propiedad "profiles" en el JSON
             if (jsonObj["profiles"] is JObject profiles) // Usar 'is' para intentar el cast y verificar por null
             {
-                profiles["InfernoLand"] = newProfile; // Esto agregará el perfil "InfernoLand" justo debajo del último perfil existente
+                profiles["AncientKraft"] = newProfile; // Esto agregará el perfil "AncientKraft" justo debajo del último perfil existente
             }
             else
             {
                 // Si "profiles" no es un JObject o es null se inicializa 'profiles' y se agrega a 'jsonObj'
                 profiles = new JObject();
-                profiles["InfernoLand"] = newProfile;
+                profiles["AncientKraft"] = newProfile;
                 jsonObj["profiles"] = profiles; // Asegúrate de que 'jsonObj' contenga una propiedad "profiles"
             }
 
@@ -949,7 +949,7 @@ namespace AutoInstall
             Cursor = Cursors.Default;
             button2.Text = "¡Listo! Modpack instalado correctamente!";
             button1.Text = "Finalizado";
-            MessageBox.Show("La instalación del modpack oficial de InfernoLand ha finalizado. Ahora ejecute su Launcher y seleccione el perfil InfernoLand", "Instalación Completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("La instalación del modpack oficial de AncientKraft ha finalizado. Ahora ejecute su Launcher y seleccione el perfil AncientKraft", "Instalación Completada", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             // Remover los controles TextBox y enlace del formulario
             Controls.Remove(logTextBox);
@@ -1020,7 +1020,7 @@ namespace AutoInstall
 
         private void pictureBox5_Click(object? sender, EventArgs e)
         {
-            selectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_infernoland");
+            selectedPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_AncientKraft");
             button2.Text = selectedPath;
             SaveCustomPath();
         }
@@ -1085,25 +1085,25 @@ namespace AutoInstall
                 // Los perfiles están en una propiedad "profiles" en el JSON
                 if (jsonObj["profiles"] is JObject profiles)
                 {
-                    // Verificar si el perfil "InfernoLand" existe antes de intentar eliminarlo
-                    if (profiles.ContainsKey("InfernoLand"))
+                    // Verificar si el perfil "AncientKraft" existe antes de intentar eliminarlo
+                    if (profiles.ContainsKey("AncientKraft"))
                     {
-                        // Eliminar el perfil "InfernoLand"
-                        profiles.Remove("InfernoLand");
+                        // Eliminar el perfil "AncientKraft"
+                        profiles.Remove("AncientKraft");
 
                         // Escribir el JSON modificado de vuelta en el archivo
                         File.WriteAllText(perfilesPath, jsonObj.ToString(Formatting.Indented));
                     }
                 }
 
-                // Construir la ruta hacia la carpeta "InfernoLand" dentro de "versions"
-                string infernoLandPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "versions", "InfernoLand");
+                // Construir la ruta hacia la carpeta "AncientKraft" dentro de "versions"
+                string AncientKraftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "versions", "AncientKraft");
 
                 // Verificar si la carpeta existe antes de intentar eliminarla
-                if (Directory.Exists(infernoLandPath))
+                if (Directory.Exists(AncientKraftPath))
                 {
-                    // Eliminar la carpeta "InfernoLand" y todo su contenido
-                    Directory.Delete(infernoLandPath, true);
+                    // Eliminar la carpeta "AncientKraft" y todo su contenido
+                    Directory.Delete(AncientKraftPath, true);
                 }
 
                 button2.Text = "¡Modpack Desinstalado correctamente!";

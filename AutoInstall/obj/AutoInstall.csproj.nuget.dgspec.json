@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-InfernoLand\\AutoInstall\\AutoInstall.csproj": {}
+    "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\AutoInstall.csproj": {}
   },
   "projects": {
-    "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-InfernoLand\\AutoInstall\\AutoInstall.csproj": {
+    "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\AutoInstall.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-InfernoLand\\AutoInstall\\AutoInstall.csproj",
+        "projectUniqueName": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\AutoInstall.csproj",
         "projectName": "AutoInstall",
-        "projectPath": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-InfernoLand\\AutoInstall\\AutoInstall.csproj",
+        "projectPath": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\AutoInstall.csproj",
         "packagesPath": "C:\\Users\\krist\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-InfernoLand\\AutoInstall\\obj\\",
+        "outputPath": "C:\\Users\\krist\\Source\\Repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\krist\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -69,6 +69,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[6.0.28, 6.0.28]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -77,7 +95,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

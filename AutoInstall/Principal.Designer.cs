@@ -55,7 +55,7 @@
             button1.FlatAppearance.MouseDownBackColor = Color.Transparent;
             button1.FlatAppearance.MouseOverBackColor = Color.Transparent;
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button1.Font = new Font("Minecraft", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             button1.ForeColor = Color.White;
             button1.Location = new Point(308, 446);
             button1.Margin = new Padding(3, 2, 3, 2);
@@ -96,7 +96,7 @@
             button2.FlatAppearance.MouseDownBackColor = Color.Transparent;
             button2.FlatAppearance.MouseOverBackColor = Color.Transparent;
             button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            button2.Font = new Font("Minecraft", 9F, FontStyle.Bold, GraphicsUnit.Point);
             button2.ForeColor = Color.White;
             button2.Location = new Point(633, 453);
             button2.Margin = new Padding(3, 2, 3, 2);
@@ -169,7 +169,7 @@
             button3.FlatAppearance.MouseDownBackColor = Color.Transparent;
             button3.FlatAppearance.MouseOverBackColor = Color.Transparent;
             button3.FlatStyle = FlatStyle.Flat;
-            button3.Font = new Font("Microsoft Sans Serif", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
+            button3.Font = new Font("Minecraft", 15.75F, FontStyle.Bold, GraphicsUnit.Point);
             button3.ForeColor = Color.White;
             button3.Location = new Point(68, 446);
             button3.Margin = new Padding(3, 2, 3, 2);
@@ -186,11 +186,11 @@
             // 
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
-            label1.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            label1.Font = new Font("Minecraft", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
             label1.ForeColor = Color.White;
             label1.Location = new Point(862, 518);
             label1.Name = "label1";
-            label1.Size = new Size(107, 24);
+            label1.Size = new Size(111, 19);
             label1.TabIndex = 14;
             label1.Text = "Modpack: ";
             label1.Visible = false;
@@ -222,7 +222,7 @@
             MinimizeBox = false;
             Name = "Principal";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Asistente de InfernoLand - Creado por Kristiansito (v0.1)";
+            Text = "Asistente de AncientKraft - Creado por Kristiansito (v0.1)";
             TransparencyKey = SystemColors.ActiveBorder;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
