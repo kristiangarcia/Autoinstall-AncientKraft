@@ -17,7 +17,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyDescriptionAttribute("El Asistente de NoobKraft es un programa el cual te ayudará a instalar los mods y" +
     " configs necesarias para jugar al servidor.")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1974c6ddcfff6634db72b3f1e896274c84bd72cc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4dbc82e483d6bbfdef01dc2392f44b1631358d7e")]
 [assembly: System.Reflection.AssemblyProductAttribute("AutoInstall")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AutoInstall")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

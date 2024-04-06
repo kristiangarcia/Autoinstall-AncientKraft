@@ -36,7 +36,7 @@ namespace AutoInstall
         private string newModpackVersion = "";
 
         //Forge libraries + AncientKraft version
-        private string libraries_Url = "https://www.dropbox.com/scl/fi/8c0c7sz9zoax19tmitq5h/forge-1.18.2-libraries-AncientKraft.zip?rlkey=2te2xdrntjqb43e0aweud29rx&dl=1"; // URL de dropbox de las libraries de Forge + Versions
+        private string libraries_Url = "https://www.dropbox.com/scl/fi/ap4tm0c4avfsprq92ij5z/forge-1.20.1-libraries-ancientkraft.zip?rlkey=9wo3yy3or5aqgbkd23bq1vxkp&dl=1"; // URL de dropbox de las libraries de Forge + Versions
 
         private string selectedPath = ""; // Variable para almacenar la ruta seleccionada por el usuario
         private System.Windows.Forms.Timer animationTimer;
@@ -670,18 +670,18 @@ namespace AutoInstall
                 // Copiar el archivo options.txt de la ruta de origen a la ruta de destino
                 File.Copy(optionsPath, filePath);
 
-                //Deshabilitar resourcepacks activos
+                //Reemplazar resourcepacks activos por los de AncientKraft
                 string[] lines = File.ReadAllLines(filePath);
 
                 for (int i = 0; i < lines.Length; i++)
                 {
                     if (lines[i].Contains("resourcePacks"))
                     {
-                        lines[i] = "resourcePacks:[]";
+                        lines[i] = "resourcePacks:[\"vanilla\",\"mod_resources\",\"Moonlight Mods Dynamic Assets\",\"eatinganimations_compat\",\"black_icons\",\"file/Aimz - Better Crosshair.zip\",\"file/Better_Enderdragon.zip\",\"file/Crops-3D_MC1.19_v1.2.0 (1).zip\",\"file/Dramatic Skys Demo 1.5.3.14.zip\",\"file/FreshAnimations_v1.9.zip\",\"file/Iron\\u0027s_3D_Spell_book_v2.0.zip\",\"file/Irons Spellbooks Icon.zip\",\"file/Link\\u0027s Font.zip\",\"file/MandalasGUI_Dakmode_Vanilla1.20.4.zip\",\"file/PiglinsInBalloons-Resource-Pack-16x-1.20.zip\",\"file/Remodeled-Doors1.3.zip\",\"file/[1.4] Enhanced Boss Bars.zip\",\"file/§9Better3DLadder§7_1.1.zip\"]";
                     }
                     else if (lines[i].Contains("incompatibleResourcePacks"))
                     {
-                        lines[i] = "incompatibleResourcePacks:[]";
+                        lines[i] = "incompatibleResourcePacks:[\"file/Crops-3D_MC1.19_v1.2.0 (1).zip\",\"file/MandalasGUI_Dakmode_Vanilla1.20.4.zip\",\"file/Remodeled-Doors1.3.zip\",\"file/§9Better3DLadder§7_1.1.zip\"]";
                     }
                 }
 
@@ -889,7 +889,7 @@ namespace AutoInstall
             {
                 ["created"] = "2024-03-08T20:18:06.251Z",
                 ["gameDir"] = @"C:\Users\krist\AppData\Roaming\.minecraft\_AncientKraft",
-                ["icon"] = "Redstone_Block",
+                ["icon"] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIElEQVRYR+2XsRHDIAxF7XlcuvBO9hqsYHZy4dIreI3kThfdgU4fhF2IIukCBL3/kQQZB+fP6Bx/eALwqUA37dm0+BfYDYACb9tWNGDfd543iTMtSpV7AGTKp2kqOnBdF81bnbA44AagJluMkRTO85w5cZ4nfV/XFTmkii054AZAgY/jUBXyIHIAzS/LolaH5kAfAHzWIQQiv+87c4TneRCdPa9L5jPR0IFuAGrK2IGaU48dcAPglpt0NBLb2geUfWw50A0A6v3yaGRVcG7U7gZYBeyAG4Bs6BIIOaAollvZcsATQMam1ozOGF19qO6LdoDN+gCQZYnuglrdP3bAE4Ch+YHCWSwfLHLc8txr+mPiDoAS/tW4yaZXESo//gN8Abal0iEPdkE5AAAAAElFTkSuQmCC",
                 ["javaArgs"] = javaArgs,
                 ["lastUsed"] = "2024-03-08T20:31:10.859Z",
                 ["lastVersionId"] = "AncientKraft",
