@@ -41,6 +41,9 @@ namespace AutoInstall
         //Forge libraries + AncientKraft version
         private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/IvgysVDOaRqbxtQ/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
+        //Distant Horizons (Optional)
+        private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/mNIkrYbmNlYSIiM/gatos.zip";
+
         private string selectedPath = ""; // Variable para almacenar la ruta seleccionada por el usuario
         private System.Windows.Forms.Timer animationTimer;
         private int animationIndex;
@@ -492,6 +495,27 @@ namespace AutoInstall
                 }
             }
 
+            // Leer la decisión del usuario desde el archivo distant.txt
+            bool downloadDistantHorizons = false;
+            string distantFilePath = Path.Combine(selectedPath, "distant.txt");
+
+            if (File.Exists(distantFilePath))
+            {
+                string userDecision = File.ReadAllText(distantFilePath).Trim();
+                downloadDistantHorizons = userDecision.Equals("true", StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                DialogResult result = MessageBox.Show(
+                    "¿Desea descargar Distant Horizons? Esta opción descargará el mapa completo, lo que puede requerir más de 30GB y puede tardar un tiempo considerable.",
+                    "Descargar Distant Horizons",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information
+                );
+
+                downloadDistantHorizons = result == DialogResult.Yes;
+                File.WriteAllText(distantFilePath, downloadDistantHorizons.ToString().ToLower());
+            }
 
             button2.Text = "Descargando librerías...";
 
@@ -764,6 +788,109 @@ namespace AutoInstall
                 };
 
                 return $"-Xmx{javaMemory}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
+            }
+
+            if (!downloadDistantHorizons)
+            {
+                button2.Text = "Desactivando Distant Horizons...";
+
+                string modsDir = Path.Combine(selectedPath, "mods");
+                DirectoryInfo modsDirectory = new DirectoryInfo(modsDir);
+
+                foreach (FileInfo file in modsDirectory.GetFiles("DistantHorizons*.jar"))
+                {
+                    string newFileName = file.FullName + ".disabled";
+                    File.Move(file.FullName, newFileName);
+                    if (logTextBox.Visible)
+                    {
+                        string message = $"Renombrado: {file.Name} a {Path.GetFileName(newFileName)}";
+                        Invoke((MethodInvoker)(() =>
+                        {
+                            logTextBox.AppendText(message + Environment.NewLine);
+                            logTextBox.ScrollToCaret();
+                        }));
+                    }
+                }
+            }
+
+                if (downloadDistantHorizons)
+            {
+                button2.Text = "Descargando Distant Horizons...";
+
+                using (HttpClient client = new HttpClient())
+                using (HttpResponseMessage response = await client.GetAsync(distantHorizons_url, HttpCompletionOption.ResponseHeadersRead))
+                using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
+                {
+                    string distantFileToWriteTo = Path.Combine(selectedPath, "distant_horizons.zip");
+                    using (Stream streamToWriteTo = File.Open(distantFileToWriteTo, FileMode.Create))
+                    {
+                        byte[] buffer = new byte[8192];
+                        long totalBytes = response.Content.Headers.ContentLength ?? -1;
+                        long downloadedBytes = 0;
+
+                        while (true)
+                        {
+                            int bytesRead = await streamToReadFrom.ReadAsync(buffer, 0, buffer.Length);
+                            if (bytesRead == 0)
+                            {
+                                break;
+                            }
+
+                            await streamToWriteTo.WriteAsync(buffer, 0, bytesRead);
+                            downloadedBytes += bytesRead;
+
+                            if (totalBytes > 0)
+                            {
+                                int progress = (int)(downloadedBytes * 100 / totalBytes);
+                                progressBarUI.Value = progress;
+                            }
+
+                            if (logTextBox.Visible)
+                            {
+                                string message = $"Descargando Distant Horizons: {downloadedBytes} / {totalBytes} bytes";
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    logTextBox.AppendText(message + Environment.NewLine);
+                                    logTextBox.ScrollToCaret();
+                                }));
+                            }
+                        }
+                    }
+                }
+
+                button2.Text = "Extrayendo Distant Horizons...";
+
+                using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "distant_horizons.zip")))
+                {
+                    zip.ExtractProgress += (sender, e) =>
+                    {
+                        if (e.EventType == ZipProgressEventType.Extracting_AfterExtractEntry)
+                        {
+                            string message = $"Extrayendo Distant Horizons: {e.CurrentEntry.FileName}";
+                            Invoke((MethodInvoker)(() =>
+                            {
+                                logTextBox.AppendText(message + Environment.NewLine);
+                                logTextBox.ScrollToCaret();
+                            }));
+                        }
+                        else if (e.EventType == ZipProgressEventType.Extracting_EntryBytesWritten)
+                        {
+                            int progress = (int)(e.BytesTransferred * 100 / e.TotalBytesToTransfer);
+                            Invoke((MethodInvoker)(() => progressBarUI.Value = progress));
+
+                            if (logTextBox.Visible)
+                            {
+                                string message = $"Extrayendo Distant Horizons: {e.BytesTransferred} / {e.TotalBytesToTransfer} bytes";
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    logTextBox.AppendText(message + Environment.NewLine);
+                                    logTextBox.ScrollToCaret();
+                                }));
+                            }
+                        }
+                    };
+                    zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
+                }
             }
 
 

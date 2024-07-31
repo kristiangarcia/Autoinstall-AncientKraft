@@ -153,53 +153,39 @@ namespace AutoInstall
         {
             string configFile = Path.Combine(selectedPath ?? string.Empty, "config", "DistantHorizons.toml");
             string drawDistance;
-            string drawResolution = ""; // Assign a default value
+            string maxHorizontalResolution = ""; // Assign a default value
 
             if (radioButton5.Checked)
             {
                 drawDistance = ajustesTrackBar1Value.ToString();
-                UpdateDrawDistance(configFile, drawDistance); // Agregar esta línea para actualizar lodChunkRenderDistance
+                if (!UpdateDrawDistance(configFile, drawDistance))
+                {
+                    MessageBox.Show("No se pudo encontrar el archivo de configuración DistantHorizons.toml.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             else if (radioButton1.Checked)
             {
                 drawDistance = "128";
-                drawResolution = "BLOCK";
+                maxHorizontalResolution = "BLOCK";
             }
             else if (radioButton2.Checked)
             {
                 drawDistance = "128";
-                drawResolution = "TWO_BLOCKS";
+                maxHorizontalResolution = "TWO_BLOCKS";
             }
             else if (radioButton3.Checked)
             {
                 drawDistance = "64";
-                drawResolution = "FOUR_BLOCKS";
+                maxHorizontalResolution = "FOUR_BLOCKS";
             }
             else
             {
                 // Aplicar preset Potato
-                ApplyPreset("Potato", 6, 6, 0, 3);
+                ApplyPreset("Potato", 4, 4, 0, 3);
                 radioButton4DrawDistance(this, EventArgs.Empty);
                 MessageBox.Show("Se han aplicado los cambios correctamente", "Cambios aplicados", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
-            }
-
-            // Obtener la ruta del archivo rubidium_extras.toml
-            string rubidiumConfigFile = Path.Combine(selectedPath ?? string.Empty, "config", "rubidium_extras.toml");
-
-            if (ajustesCheckBoxValue)
-            {
-                // Habilitar los "Max Distance Checks"
-                UpdateMaxDistanceChecks(rubidiumConfigFile, true);
-
-                // Actualizar la distancia de renderizado de entidades
-                string entityDistance = (ajustesTrackBar2Value * ajustesTrackBar2Value).ToString();
-                UpdateEntityDistance(rubidiumConfigFile, entityDistance);
-            }
-            else
-            {
-                // Deshabilitar los "Max Distance Checks"
-                UpdateMaxDistanceChecks(rubidiumConfigFile, false);
             }
 
             // Guardar el valor del CheckBox en el archivo "extras.txt"
@@ -209,20 +195,20 @@ namespace AutoInstall
             if (radioButton1.Checked)
             {
                 // Aplicar preset High
-                ApplyPreset("High", 12, 12, 1, 1);
+                ApplyPreset("High", 8, 8, 1, 1);
                 radioButton1DrawDistance(this, EventArgs.Empty);
             }
             else if (radioButton2.Checked)
             {
                 // Aplicar preset Medium
-                ApplyPreset("Medium", 10, 10, 1, 1);
+                ApplyPreset("Medium", 8, 6, 1, 1);
                 radioButton2DrawDistance(this, EventArgs.Empty);
 
             }
             else if (radioButton3.Checked)
             {
                 // Aplicar preset Low
-                ApplyPreset("Low", 8, 8, 0, 2);
+                ApplyPreset("Low", 6, 6, 0, 2);
                 radioButton3DrawDistance(this, EventArgs.Empty);
             }
             else if (radioButton5.Checked)
@@ -259,7 +245,7 @@ namespace AutoInstall
                         return;
                     }
                 }
-                drawResolution = "BLOCK";
+                maxHorizontalResolution = "BLOCK";
             }
             else if (textoLabel4 == "Tipo Renderizado: 2 bloques")
             {
@@ -290,7 +276,7 @@ namespace AutoInstall
                         return;
                     }
                 }
-                drawResolution = "TWO_BLOCKS";
+                maxHorizontalResolution = "TWO_BLOCKS";
             }
             else if (textoLabel4 == "Tipo Renderizado: 4 bloques")
             {
@@ -321,7 +307,7 @@ namespace AutoInstall
                         return;
                     }
                 }
-                drawResolution = "FOUR_BLOCKS";
+                maxHorizontalResolution = "FOUR_BLOCKS";
             }
             else if (textoLabel4 == "DESACTIVADO")
             {
@@ -347,7 +333,7 @@ namespace AutoInstall
 
             if (UpdateDrawDistance(configFile, drawDistance))
             {
-                if (UpdateDrawResolution(configFile, drawResolution))
+                if (UpdatemaxHorizontalResolution(configFile, maxHorizontalResolution))
                 {
                     MessageBox.Show("Se han aplicado los cambios correctamente", "Cambios aplicados", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -364,8 +350,6 @@ namespace AutoInstall
 
 
         }
-
-
 
         private void SavePresetToFile(string presetName)
         {
@@ -406,9 +390,9 @@ namespace AutoInstall
 
                     for (int i = 0; i < lines.Length; i++)
                     {
-                        if (lines[i].Contains("lodChunkRenderDistance"))
+                        if (lines[i].Contains("lodChunkRenderDistanceRadius"))
                         {
-                            lines[i] = "lodChunkRenderDistance = " + drawDistance + "";
+                            lines[i] = "lodChunkRenderDistanceRadius = " + drawDistance + "";
                             File.WriteAllLines(configFile, lines);
                             return true;
                         }
@@ -429,8 +413,16 @@ namespace AutoInstall
         {
             string configFile = Path.Combine(selectedPath ?? string.Empty, "options.txt");
 
-            //try
-            //{
+            if (!File.Exists(configFile))
+            {
+                configFile = Path.Combine(selectedPath ?? string.Empty, "config", "defaultoptions", "options.txt");
+                if (!File.Exists(configFile))
+                {
+                    MessageBox.Show("options.txt no encontrado en ninguna de las ubicaciones esperadas.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
             string[] lines = File.ReadAllLines(configFile);
 
             for (int i = 0; i < lines.Length; i++)
@@ -449,13 +441,7 @@ namespace AutoInstall
                 }
             }
 
-            using (StreamWriter writer = new StreamWriter(configFile))
-            {
-                foreach (string line in lines)
-                {
-                    writer.WriteLine(line);
-                }
-            }
+            File.WriteAllLines(configFile, lines);
 
             // Cambiar el valor de Quality Mode en dynamic_lights_reforged.toml
             string dynamicLightsConfigFile = Path.Combine(selectedPath ?? string.Empty, "config", "dynamic_lights_reforged.toml");
@@ -470,13 +456,7 @@ namespace AutoInstall
                 }
             }
 
-            using (StreamWriter writer = new StreamWriter(dynamicLightsConfigFile))
-            {
-                foreach (string line in dynamicLightsLines)
-                {
-                    writer.WriteLine(line);
-                }
-            }
+            File.WriteAllLines(dynamicLightsConfigFile, dynamicLightsLines);
 
             SavePresetToFile(presetName);
             //}
@@ -499,40 +479,6 @@ namespace AutoInstall
                     return "SLOW";
                 default:
                     return "OFF";
-            }
-        }
-
-
-
-
-        private void UpdateMaxDistanceChecks(string configFile, bool enableChecks)
-        {
-            if (File.Exists(configFile))
-            {
-                try
-                {
-                    string[] lines = File.ReadAllLines(configFile);
-
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        if (lines[i].Contains("Enable Max Distance Checks"))
-                        {
-                            lines[i] = "\"Enable Max Distance Checks\" = " + enableChecks.ToString().ToLower();
-                            File.WriteAllLines(configFile, lines);
-                            return;
-                        }
-                    }
-                }
-                catch (IOException)
-                {
-                    // Manejar el error si ocurre al leer o escribir el archivo
-                    MessageBox.Show("Error al actualizar el archivo de configuración. Porfavor reinstala el Modpack.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                // Manejar el caso en el que el archivo no existe
-                MessageBox.Show("No se pudo encontrar el archivo de configuración. Reinstala el Modpack", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -568,24 +514,24 @@ namespace AutoInstall
 
 
             string configFile = Path.Combine(selectedPath ?? string.Empty, "config", "DistantHorizons.toml");
-            string drawResolution = "BLOCK";
+            string maxHorizontalResolution = "BLOCK";
 
-            if (UpdateDrawResolution(configFile, drawResolution))
+            if (UpdatemaxHorizontalResolution(configFile, maxHorizontalResolution))
             {
 
             }
             else
             {
-                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de drawResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de maxHorizontalResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             string[] lines = File.ReadAllLines(configFile);
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].Contains("lodChunkRenderDistance"))
+                if (lines[i].Contains("lodChunkRenderDistanceRadius"))
                 {
-                    lines[i] = "lodChunkRenderDistance = 128";
+                    lines[i] = "lodChunkRenderDistanceRadius = 128";
                     File.WriteAllLines(configFile, lines);
 
                 }
@@ -624,24 +570,24 @@ namespace AutoInstall
 
 
             string configFile = Path.Combine(selectedPath ?? string.Empty, "config", "DistantHorizons.toml");
-            string drawResolution = "TWO_BLOCKS";
+            string maxHorizontalResolution = "TWO_BLOCKS";
 
-            if (UpdateDrawResolution(configFile, drawResolution))
+            if (UpdatemaxHorizontalResolution(configFile, maxHorizontalResolution))
             {
 
             }
             else
             {
-                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de drawResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de maxHorizontalResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             string[] lines = File.ReadAllLines(configFile);
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].Contains("lodChunkRenderDistance"))
+                if (lines[i].Contains("lodChunkRenderDistanceRadius"))
                 {
-                    lines[i] = "lodChunkRenderDistance = 128";
+                    lines[i] = "lodChunkRenderDistanceRadius = 128";
                     File.WriteAllLines(configFile, lines);
 
                 }
@@ -681,24 +627,24 @@ namespace AutoInstall
 
 
             string configFile = Path.Combine(selectedPath ?? string.Empty, "config", "DistantHorizons.toml");
-            string drawResolution = "FOUR_BLOCKS";
+            string maxHorizontalResolution = "FOUR_BLOCKS";
 
-            if (UpdateDrawResolution(configFile, drawResolution))
+            if (UpdatemaxHorizontalResolution(configFile, maxHorizontalResolution))
             {
 
             }
             else
             {
-                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de drawResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se pudo encontrar el archivo de configuración o el valor de maxHorizontalResolution en el archivo.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             string[] lines = File.ReadAllLines(configFile);
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i].Contains("lodChunkRenderDistance"))
+                if (lines[i].Contains("lodChunkRenderDistanceRadius"))
                 {
-                    lines[i] = "lodChunkRenderDistance = 64";
+                    lines[i] = "lodChunkRenderDistanceRadius = 64";
                     File.WriteAllLines(configFile, lines);
 
                 }
@@ -730,7 +676,7 @@ namespace AutoInstall
         }
 
 
-        private bool UpdateDrawResolution(string configFile, string drawResolution)
+        private bool UpdatemaxHorizontalResolution(string configFile, string maxHorizontalResolution)
         {
             if (File.Exists(configFile))
             {
@@ -740,9 +686,9 @@ namespace AutoInstall
 
                     for (int i = 0; i < lines.Length; i++)
                     {
-                        if (lines[i].Contains("drawResolution"))
+                        if (lines[i].Contains("maxHorizontalResolution"))
                         {
-                            lines[i] = "drawResolution = \"" + drawResolution + "\"";
+                            lines[i] = "maxHorizontalResolution = \"" + maxHorizontalResolution + "\"";
                             File.WriteAllLines(configFile, lines);
                             return true;
                         }
