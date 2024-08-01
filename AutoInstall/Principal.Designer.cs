@@ -74,7 +74,7 @@
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.Cursor = Cursors.Hand;
             pictureBox1.Image = Properties.Resources.discord;
-            pictureBox1.Location = new Point(804, 6);
+            pictureBox1.Location = new Point(620, 6);
             pictureBox1.Margin = new Padding(3, 2, 3, 2);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(52, 56);
@@ -112,10 +112,10 @@
             // pictureBox4
             // 
             pictureBox4.BackColor = Color.Transparent;
-            pictureBox4.Image = Properties.Resources.Discord_rounded;
-            pictureBox4.Location = new Point(862, 6);
+            pictureBox4.Image = Properties.Resources.Discord_Kristiansito_Rounded;
+            pictureBox4.Location = new Point(687, 6);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(175, 203);
+            pictureBox4.Size = new Size(350, 294);
             pictureBox4.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox4.TabIndex = 7;
             pictureBox4.TabStop = false;
@@ -209,10 +209,10 @@
             Controls.Add(pictureBox6);
             Controls.Add(pictureBox5);
             Controls.Add(progressBarUI);
-            Controls.Add(pictureBox4);
             Controls.Add(button2);
             Controls.Add(pictureBox1);
             Controls.Add(button1);
+            Controls.Add(pictureBox4);
             DoubleBuffered = true;
             ForeColor = Color.Black;
             FormBorderStyle = FormBorderStyle.FixedSingle;

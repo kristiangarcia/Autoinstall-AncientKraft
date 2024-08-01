@@ -7,20 +7,24 @@
       "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\ajustes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\ajustes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\autoinstall\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\principal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\properties\\resources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\properties\\resources.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|solutionrelative:autoinstall\\personalizado.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4ECF2DC8-FD6E-4574-B6C1-10A54BB052CA}|AutoInstall\\AutoInstall.csproj|c:\\users\\krist\\source\\repos\\kristiansito\\autoinstall-ancientkraft\\autoinstall\\distanthorizons.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -48,7 +52,7 @@
               "RelativeDocumentMoniker": "AutoInstall\\Principal.cs",
               "ToolTip": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Principal.cs",
               "RelativeToolTip": "AutoInstall\\Principal.cs",
-              "ViewState": "AQIAAAEDAAAAAAAAAAAAAB8DAABZAAAA",
+              "ViewState": "AQIAAMQCAAAAAAAAAAAuwHMDAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-03-08T20:44:08.706Z",
               "IsPinned": true,
@@ -56,20 +60,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Principal.cs [Design]",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Principal.cs",
               "RelativeDocumentMoniker": "AutoInstall\\Principal.cs",
               "ToolTip": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Principal.cs [Design]",
               "RelativeToolTip": "AutoInstall\\Principal.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-03-08T20:44:10.416Z",
+              "WhenOpened": "2024-08-01T12:12:50.351Z",
               "IsPinned": true,
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Ajustes.cs",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Ajustes.cs",
               "RelativeDocumentMoniker": "AutoInstall\\Ajustes.cs",
@@ -78,12 +82,11 @@
               "ViewState": "AQIAAA8AAAAAAAAAAAAMwCgAAABWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-14T16:00:20.569Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Personalizado.cs",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Personalizado.cs",
               "RelativeDocumentMoniker": "AutoInstall\\Personalizado.cs",
@@ -97,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "Personalizado.cs [Design]",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Personalizado.cs",
               "RelativeDocumentMoniker": "AutoInstall\\Personalizado.cs",
@@ -105,12 +108,11 @@
               "RelativeToolTip": "AutoInstall\\Personalizado.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-31T03:22:38.392Z",
-              "IsPinned": true,
-              "EditorCaption": " [Design]"
+              "IsPinned": true
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "DistantHorizons.cs",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\DistantHorizons.cs",
               "RelativeDocumentMoniker": "AutoInstall\\DistantHorizons.cs",
@@ -124,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "DistantHorizons.cs [Design]",
               "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\DistantHorizons.cs",
               "RelativeDocumentMoniker": "AutoInstall\\DistantHorizons.cs",
@@ -132,8 +134,20 @@
               "RelativeToolTip": "AutoInstall\\DistantHorizons.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-31T03:22:48.575Z",
-              "IsPinned": true,
-              "EditorCaption": " [Design]"
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Resources.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Properties\\Resources.Designer.cs",
+              "RelativeDocumentMoniker": "AutoInstall\\Properties\\Resources.Designer.cs",
+              "ToolTip": "C:\\Users\\krist\\source\\repos\\Kristiansito\\Autoinstall-AncientKraft\\AutoInstall\\Properties\\Resources.Designer.cs",
+              "RelativeToolTip": "AutoInstall\\Properties\\Resources.Designer.cs",
+              "ViewState": "AQIAAE0AAAAAAAAAAAAwwGQAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-01T12:08:01.463Z",
+              "EditorCaption": ""
             }
           ]
         }

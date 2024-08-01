@@ -361,34 +361,18 @@ namespace AutoInstall
             this.ControlBox = false;
             Cursor = Cursors.WaitCursor;
 
-            string optionsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "options.txt"); //Ruta por defecto
-            string filePath = Path.Combine(selectedPath, "options.txt"); //Ruta a la que será copiado posteriormente
+            string optionsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "options.txt"); // Ruta por defecto
+            string filePath = Path.Combine(selectedPath, "options.txt"); // Ruta a la que será copiado posteriormente
             string modsPath = Path.Combine(selectedPath, "mods" + Path.DirectorySeparatorChar);
 
-            // Comprobar que el directorio mods existe
-            //if (!Directory.Exists(modsPath))
-            //{
-            //    if (!File.Exists(optionsPath))
-            //    {
-            //        MessageBox.Show("Por favor, inicie su Launcher en cualquier versión almenos una vez y toque cualquier configuración gráfica, luego cierrelo e intentelo de nuevo...", "No se encontró archivo de configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        Environment.Exit(0);
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Por favor, inicie su Launcher al menos una vez en cualquier versión antes de continuar...", "Eh eh eh.. detente!!!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //        Environment.Exit(0);
-            //    }
-            //}
-
-            //Comprobar que options.txt existe
+            // Comprobar que options.txt existe
             if (!File.Exists(optionsPath))
             {
-                MessageBox.Show("Por favor, inicie su Launcher en cualquier versión almenos una vez y toque cualquier configuración gráfica, luego cierrelo e intentelo de nuevo...", "No se encontró archivo de configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Por favor, inicie su Launcher en cualquier versión al menos una vez y toque cualquier configuración gráfica, luego cierrelo e intentelo de nuevo...", "No se encontró archivo de configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
             }
 
-
-            // Iniciar animacion Descargando...
+            // Iniciar animación Descargando...
             button1.Text = animationSequence[animationIndex];
             animationTimer.Interval = 500;
             animationTimer.Tick += (s, e) =>
@@ -448,7 +432,6 @@ namespace AutoInstall
                 directory.Delete();
             }
 
-
             // Crear control TextBox para el log
             TextBox logTextBox = new TextBox();
             logTextBox.Multiline = true;
@@ -459,32 +442,23 @@ namespace AutoInstall
             logTextBox.Location = new Point(progressBarUI.Left, progressBarUI.Top - logTextBox.Height - 10);
             logTextBox.Visible = false; // Ocultar el log inicialmente
             Controls.Add(logTextBox);
+            logTextBox.BringToFront(); // Asegurar que el logTextBox esté en la capa superior
 
-            // Crear enlace "Mostrar más detalles"
-            LinkLabel linkMoreDetails = new LinkLabel();
-            linkMoreDetails.Text = "Mostrar más detalles (lento)";
-            linkMoreDetails.LinkBehavior = LinkBehavior.HoverUnderline;
-            linkMoreDetails.AutoSize = true;
-            linkMoreDetails.LinkClicked += (s, e) =>
-            {
-                if (logTextBox.Visible)
-                {
-                    logTextBox.Hide();
-                    linkMoreDetails.Text = "Mostrar más detalles (lento)";
-                    linkMoreDetails.Location = new Point(progressBarUI.Left, progressBarUI.Top - linkMoreDetails.Height - 10);
-                }
-                else
-                {
-                    logTextBox.Show();
-                    linkMoreDetails.Text = "Ocultar detalles (rápido)";
-                    // Mover el botón "Ocultar detalles" encima del log
-                    linkMoreDetails.Location = new Point(logTextBox.Left, logTextBox.Top - linkMoreDetails.Height - 10);
-                }
-            };
-            linkMoreDetails.Location = new Point(progressBarUI.Left, progressBarUI.Top - linkMoreDetails.Height - 10);
-            Controls.Add(linkMoreDetails);
+            // Crear Label para mostrar la velocidad de descarga
+            Label speedLabel = new Label();
+            speedLabel.AutoSize = true;
+            speedLabel.ForeColor = Color.White; // Color del texto
+            speedLabel.BackColor = Color.Transparent; // Sin fondo
+            Controls.Add(speedLabel);
 
-            //Crear carpeta _AncientKraft en caso de que la ruta sea por defecto
+            // Crear Label para mostrar el tiempo restante
+            Label timeLabel = new Label();
+            timeLabel.AutoSize = true;
+            timeLabel.ForeColor = Color.White; // Color del texto
+            timeLabel.BackColor = Color.Transparent; // Sin fondo
+            Controls.Add(timeLabel);
+
+            // Crear carpeta _AncientKraft en caso de que la ruta sea por defecto
             if (selectedPath == Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "_AncientKraft"))
             {
                 // Verificar si la carpeta _AncientKraft ya existe
@@ -507,19 +481,25 @@ namespace AutoInstall
             else
             {
                 DialogResult result = MessageBox.Show(
-                    "¿Desea descargar Distant Horizons? Esta opción descargará el mapa completo, lo que puede requerir más de 30GB y puede tardar un tiempo considerable.",
-                    "Descargar Distant Horizons",
+                    "¿Desea descargar Distant Horizons?\n\n" +
+                    "Esta opción mejorará su experiencia permitiéndole ver más lejos en el juego.\n" +
+                    "Tenga en cuenta que descargará el mapa completo, lo que puede requerir más de 30 GB y podría tardar un tiempo considerable.\n\n" +
+                    "Nota: Esta descarga no es recomendable para PCs con bajos recursos.",
+                    "Descargar Distant Horizons (recomendado)",
                     MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information
+                    MessageBoxIcon.Question
                 );
 
                 downloadDistantHorizons = result == DialogResult.Yes;
                 File.WriteAllText(distantFilePath, downloadDistantHorizons.ToString().ToLower());
             }
 
+            DateTime startTime; // Declarar startTime aquí
+            DateTime lastUpdateTime = DateTime.Now; // Tiempo de la última actualización
+
             button2.Text = "Descargando librerías...";
 
-            // Descargar archivo zip librerias de dropbox
+            // Descargar archivo zip librerías de Dropbox
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync(libraries_Url, HttpCompletionOption.ResponseHeadersRead))
             using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
@@ -530,6 +510,7 @@ namespace AutoInstall
                     byte[] buffer = new byte[8192];
                     long totalBytes = response.Content.Headers.ContentLength ?? -1;
                     long downloadedBytes = 0;
+                    startTime = DateTime.Now; // Tiempo de inicio
 
                     while (true)
                     {
@@ -546,27 +527,46 @@ namespace AutoInstall
                         {
                             int progress = (int)(downloadedBytes * 100 / totalBytes);
                             progressBarUI.Value = progress;
-                        }
 
-                        // Registrar el progreso en el TextBox (si está visible)
-                        if (logTextBox.Visible)
-                        {
-                            string message = $"Descargando: {downloadedBytes} / {totalBytes} bytes";
-                            Invoke((MethodInvoker)(() =>
+                            // Actualizar cada segundo
+                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
                             {
-                                logTextBox.AppendText(message + Environment.NewLine);
-                                logTextBox.ScrollToCaret();
-                            }));
+                                TimeSpan elapsedTime = DateTime.Now - startTime;
+                                double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
+                                double bytesPerSecondInMB = bytesPerSecond / (1024 * 1024); // Convertir a MB/s
+                                double estimatedTimeRemaining = (totalBytes - downloadedBytes) / bytesPerSecond;
+
+                                // Actualizar el Label con el tiempo restante
+                                timeLabel.Text = $"Tiempo restante: {TimeSpan.FromSeconds(estimatedTimeRemaining):hh\\:mm\\:ss}";
+
+                                // Actualizar el Label con la velocidad
+                                speedLabel.Text = $"{bytesPerSecondInMB:F2} MB/s";
+
+                                // Actualizar la ubicación de los Labels
+                                timeLabel.Location = new Point(progressBarUI.Left - timeLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - timeLabel.Height / 2 - speedLabel.Height - 5);
+                                speedLabel.Location = new Point(progressBarUI.Left - speedLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - speedLabel.Height / 2);
+
+                                lastUpdateTime = DateTime.Now; // Actualizar el tiempo de la última actualización
+                            }
+
+                            // Registrar el progreso en el TextBox (si está visible)
+                            if (logTextBox.Visible)
+                            {
+                                string message = $"Descargando: {downloadedBytes} / {totalBytes} bytes ({speedLabel.Text}, {timeLabel.Text})";
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    logTextBox.AppendText(message + Environment.NewLine);
+                                    logTextBox.ScrollToCaret();
+                                }));
+                            }
                         }
                     }
                 }
             }
 
-
             button2.Text = "Descargando modpack (puede tardar un rato)...";
 
-
-            // Descargar archivo zip modpack de dropbox
+            // Descargar archivo zip modpack de Dropbox
             using (HttpClient client = new HttpClient())
             using (HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
@@ -577,6 +577,8 @@ namespace AutoInstall
                     byte[] buffer = new byte[8192];
                     long totalBytes = response.Content.Headers.ContentLength ?? -1;
                     long downloadedBytes = 0;
+                    startTime = DateTime.Now; // Tiempo de inicio
+                    lastUpdateTime = DateTime.Now; // Tiempo de la última actualización
 
                     while (true)
                     {
@@ -593,22 +595,44 @@ namespace AutoInstall
                         {
                             int progress = (int)(downloadedBytes * 100 / totalBytes);
                             progressBarUI.Value = progress;
-                        }
 
-                        // Registrar el progreso en el TextBox (si está visible)
-                        if (logTextBox.Visible)
-                        {
-                            string message = $"Descargando: {downloadedBytes} / {totalBytes} bytes";
-                            Invoke((MethodInvoker)(() =>
+                            // Actualizar cada segundo
+                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
                             {
-                                logTextBox.AppendText(message + Environment.NewLine);
-                                logTextBox.ScrollToCaret();
-                            }));
+                                TimeSpan elapsedTime = DateTime.Now - startTime;
+                                double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
+                                double bytesPerSecondInMB = bytesPerSecond / (1024 * 1024); // Convertir a MB/s
+                                double estimatedTimeRemaining = (totalBytes - downloadedBytes) / bytesPerSecond;
+
+                                // Actualizar el Label con el tiempo restante
+                                timeLabel.Text = $"Tiempo restante: {TimeSpan.FromSeconds(estimatedTimeRemaining):hh\\:mm\\:ss}";
+
+                                // Actualizar el Label con la velocidad
+                                speedLabel.Text = $"{bytesPerSecondInMB:F2} MB/s";
+
+                                // Actualizar la ubicación de los Labels
+                                timeLabel.Location = new Point(progressBarUI.Left - timeLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - timeLabel.Height / 2 - speedLabel.Height - 5);
+                                speedLabel.Location = new Point(progressBarUI.Left - speedLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - speedLabel.Height / 2);
+
+                                lastUpdateTime = DateTime.Now; // Actualizar el tiempo de la última actualización
+                            }
+
+                            // Registrar el progreso en el TextBox (si está visible)
+                            if (logTextBox.Visible)
+                            {
+                                string message = $"Descargando: {downloadedBytes} / {totalBytes} bytes ({speedLabel.Text}, {timeLabel.Text})";
+                                Invoke((MethodInvoker)(() =>
+                                {
+                                    logTextBox.AppendText(message + Environment.NewLine);
+                                    logTextBox.ScrollToCaret();
+                                }));
+                            }
                         }
                     }
                 }
             }
 
+            // Desactivar la animación de "Descargando..."
             animationTimer.Stop();
 
             button1.Text = "Un segundo...";
@@ -813,7 +837,7 @@ namespace AutoInstall
                 }
             }
 
-                if (downloadDistantHorizons)
+            if (downloadDistantHorizons)
             {
                 button2.Text = "Descargando Distant Horizons...";
 
@@ -843,11 +867,33 @@ namespace AutoInstall
                             {
                                 int progress = (int)(downloadedBytes * 100 / totalBytes);
                                 progressBarUI.Value = progress;
+
+                                // Actualizar cada segundo
+                                if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
+                                {
+                                    TimeSpan elapsedTime = DateTime.Now - startTime;
+                                    double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
+                                    double bytesPerSecondInMB = bytesPerSecond / (1024 * 1024); // Convertir a MB/s
+                                    double estimatedTimeRemaining = (totalBytes - downloadedBytes) / bytesPerSecond;
+
+                                    // Actualizar el Label con el tiempo restante
+                                    timeLabel.Text = $"Tiempo restante: {TimeSpan.FromSeconds(estimatedTimeRemaining):hh\\:mm\\:ss}";
+
+                                    // Actualizar el Label con la velocidad
+                                    speedLabel.Text = $"{bytesPerSecondInMB:F2} MB/s";
+
+                                    // Actualizar la ubicación de los Labels
+                                    timeLabel.Location = new Point(progressBarUI.Left - timeLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - timeLabel.Height / 2 - speedLabel.Height - 5);
+                                    speedLabel.Location = new Point(progressBarUI.Left - speedLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - speedLabel.Height / 2);
+
+                                    lastUpdateTime = DateTime.Now; // Actualizar el tiempo de la última actualización
+                                }
                             }
 
+                            // Registrar el progreso en el TextBox (si está visible)
                             if (logTextBox.Visible)
                             {
-                                string message = $"Descargando Distant Horizons: {downloadedBytes} / {totalBytes} bytes";
+                                string message = $"Descargando Distant Horizons: {downloadedBytes} / {totalBytes} bytes ({speedLabel.Text}, {timeLabel.Text})";
                                 Invoke((MethodInvoker)(() =>
                                 {
                                     logTextBox.AppendText(message + Environment.NewLine);
@@ -858,7 +904,7 @@ namespace AutoInstall
                     }
                 }
 
-                button2.Text = "Extrayendo Distant Horizons...";
+            button2.Text = "Extrayendo Distant Horizons...";
 
                 using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "distant_horizons.zip")))
                 {
@@ -906,7 +952,6 @@ namespace AutoInstall
 
             // Remover los controles TextBox y enlace del formulario
             Controls.Remove(logTextBox);
-            Controls.Remove(linkMoreDetails);
 
 
             // Abrir form Ajustes y pasar los valores actuales
