@@ -39,7 +39,7 @@ namespace AutoInstall
         private string newModpackVersion = "";
 
         //Forge libraries + AncientKraft version
-        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/IvgysVDOaRqbxtQ/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
+        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/SckocFfrchZivmK/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
         //Distant Horizons (Optional)
         private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/mNIkrYbmNlYSIiM/gatos.zip";
@@ -740,6 +740,24 @@ namespace AutoInstall
             // Eliminar el archivo librerias.zip
             string fileToDelete2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "librerias.zip");
             File.Delete(fileToDelete2);
+
+            // Eliminar el archivo distant_horizons.zip
+            string fileToDelete3 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "distant_horizons.zip");
+
+            // Verificar si el archivo existe antes de intentar eliminarlo
+            if (File.Exists(fileToDelete3))
+            {
+                try
+                {
+                    File.Delete(fileToDelete3);
+                }
+                catch (IOException)
+                {
+                }
+            }
+            else
+            {
+            }
 
             ////////////////////////////////////////
             //Crear perfil en launcher_profiles.json

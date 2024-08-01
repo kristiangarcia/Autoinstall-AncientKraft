@@ -188,9 +188,6 @@ namespace AutoInstall
                 return;
             }
 
-            // Guardar el valor del CheckBox en el archivo "extras.txt"
-            SaveCheckBoxValueToFile();
-
             // Presets
             if (radioButton1.Checked)
             {
@@ -362,21 +359,6 @@ namespace AutoInstall
             catch (IOException)
             {
                 MessageBox.Show("Error al guardar el archivo de preset.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void SaveCheckBoxValueToFile()
-        {
-            string extrasFile = Path.Combine(selectedPath ?? string.Empty, "extras.txt");
-            string checkBoxValue = ajustesCheckBoxValue ? "true" : "false";
-
-            try
-            {
-                File.WriteAllText(extrasFile, checkBoxValue);
-            }
-            catch (IOException)
-            {
-                MessageBox.Show("Error al guardar el archivo de extras.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
