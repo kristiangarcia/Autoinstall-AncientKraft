@@ -10,8 +10,8 @@
       "AutoInstall/1.0.0": {
         "dependencies": {
           "DotNetZip": "1.16.0",
-          "Microsoft.NET.ILLink.Analyzers": "7.0.100-1.23211.1",
-          "Microsoft.NET.ILLink.Tasks": "7.0.100-1.23211.1",
+          "Microsoft.NET.ILLink.Analyzers": "7.0.100-1.23401.1",
+          "Microsoft.NET.ILLink.Tasks": "7.0.100-1.23401.1",
           "Newtonsoft.Json": "13.0.3",
           "System.Management": "8.0.0"
         },
@@ -31,8 +31,8 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23211.1": {},
-      "Microsoft.NET.ILLink.Tasks/7.0.100-1.23211.1": {},
+      "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23401.1": {},
+      "Microsoft.NET.ILLink.Tasks/7.0.100-1.23401.1": {},
       "Microsoft.NETCore.Platforms/3.1.1": {},
       "Microsoft.Win32.SystemEvents/4.7.0": {
         "dependencies": {
@@ -110,19 +110,19 @@
       "path": "dotnetzip/1.16.0",
       "hashPath": "dotnetzip.1.16.0.nupkg.sha512"
     },
-    "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23211.1": {
+    "Microsoft.NET.ILLink.Analyzers/7.0.100-1.23401.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-0GvbEgDGcUQA9KuWcQU1WwYHXt1tBzNr1Nls/M57rM7NA/AndFwCaCEoJpJkmxRY7xLlPDBnmGp8h5+FNqUngg==",
-      "path": "microsoft.net.illink.analyzers/7.0.100-1.23211.1",
-      "hashPath": "microsoft.net.illink.analyzers.7.0.100-1.23211.1.nupkg.sha512"
+      "sha512": "sha512-XirkjOLc5Vc3HsXRc2Z6ZbQv6l0RvWgJa/31w7XqZ914MoSi3H3OCNRMWFw7H2EYfsnKbokFfhCcysAmUcEOgw==",
+      "path": "microsoft.net.illink.analyzers/7.0.100-1.23401.1",
+      "hashPath": "microsoft.net.illink.analyzers.7.0.100-1.23401.1.nupkg.sha512"
     },
-    "Microsoft.NET.ILLink.Tasks/7.0.100-1.23211.1": {
+    "Microsoft.NET.ILLink.Tasks/7.0.100-1.23401.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-tvG8XZYLjT0o3WicCyKBZysVWo1jC9HdCFmNRmddx3WbAz0UCsd0qKZqpiEo99VLA8Re+FzWK51OcRldQPbt2Q==",
-      "path": "microsoft.net.illink.tasks/7.0.100-1.23211.1",
-      "hashPath": "microsoft.net.illink.tasks.7.0.100-1.23211.1.nupkg.sha512"
+      "sha512": "sha512-mI6vCdPEhluLtMn/GV0texEWg5oAPQWCCE4LWspM+Bmy75Nd4EQsziQXrdOFqNeSBQMrxDX9C/O5Xi3kpKSMIw==",
+      "path": "microsoft.net.illink.tasks/7.0.100-1.23401.1",
+      "hashPath": "microsoft.net.illink.tasks.7.0.100-1.23401.1.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/3.1.1": {
       "type": "package",
