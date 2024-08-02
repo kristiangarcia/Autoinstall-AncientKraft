@@ -222,7 +222,7 @@
             MinimizeBox = false;
             Name = "Principal";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Asistente de AncientKraft - Creado por Kristiansito (v1.3)";
+            Text = "Asistente de AncientKraft - Creado por Kristiansito (v1.4)";
             TransparencyKey = SystemColors.ActiveBorder;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();

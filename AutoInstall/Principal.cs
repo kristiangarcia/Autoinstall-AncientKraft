@@ -39,7 +39,7 @@ namespace AutoInstall
         private string newModpackVersion = "";
 
         //Forge libraries + AncientKraft version
-        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/WBrrvmVarIHmmpV/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
+        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/dOdnKoYrDLXhhOE/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
         //Distant Horizons (Optional)
         private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/fDlvItrUMnAdDYD/Distant_Horizons_server_data.zip";
@@ -824,7 +824,7 @@ namespace AutoInstall
                 ["icon"] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIElEQVRYR+2XsRHDIAxF7XlcuvBO9hqsYHZy4dIreI3kThfdgU4fhF2IIukCBL3/kQQZB+fP6Bx/eALwqUA37dm0+BfYDYACb9tWNGDfd543iTMtSpV7AGTKp2kqOnBdF81bnbA44AagJluMkRTO85w5cZ4nfV/XFTmkii054AZAgY/jUBXyIHIAzS/LolaH5kAfAHzWIQQiv+87c4TneRCdPa9L5jPR0IFuAGrK2IGaU48dcAPglpt0NBLb2geUfWw50A0A6v3yaGRVcG7U7gZYBeyAG4Bs6BIIOaAollvZcsATQMam1ozOGF19qO6LdoDN+gCQZYnuglrdP3bAE4Ch+YHCWSwfLHLc8txr+mPiDoAS/tW4yaZXESo//gN8Abal0iEPdkE5AAAAAElFTkSuQmCC",
                 ["javaArgs"] = javaArgs,
                 ["lastUsed"] = "2024-03-08T20:31:10.859Z",
-                ["lastVersionId"] = "AncientKraft",
+                ["lastVersionId"] = "1.20.1-forge-47.3.0",
                 ["name"] = "AncientKraft",
                 ["type"] = "custom"
             };
