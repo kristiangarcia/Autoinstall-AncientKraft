@@ -39,7 +39,7 @@ namespace AutoInstall
         private string newModpackVersion = "";
 
         //Forge libraries + AncientKraft version
-        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/SckocFfrchZivmK/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
+        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/WBrrvmVarIHmmpV/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
         //Distant Horizons (Optional)
         private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/fDlvItrUMnAdDYD/Distant_Horizons_server_data.zip";
@@ -1191,19 +1191,34 @@ namespace AutoInstall
                 var json = File.ReadAllText(perfilesPath);
                 var jsonObj = JObject.Parse(json);
 
-                // Los perfiles están en una propiedad "profiles" en el JSON
+                // La variable para almacenar el nombre del perfil a eliminar
+                string perfilNombre = "AncientKraft";
+                bool perfilEliminado = false;
+
+                // Verificar si el JSON tiene la propiedad "profiles"
                 if (jsonObj["profiles"] is JObject profiles)
                 {
-                    // Verificar si el perfil "AncientKraft" existe antes de intentar eliminarlo
-                    if (profiles.ContainsKey("AncientKraft"))
+                    // Buscar el perfil con el nombre específico en "profiles"
+                    foreach (var kvp in profiles)
                     {
-                        // Eliminar el perfil "AncientKraft"
-                        profiles.Remove("AncientKraft");
-
-                        // Escribir el JSON modificado de vuelta en el archivo
-                        File.WriteAllText(perfilesPath, jsonObj.ToString(Formatting.Indented));
+                        var perfil = kvp.Value as JObject;
+                        if (perfil != null && perfil["name"]?.ToString() == perfilNombre)
+                        {
+                            // Eliminar el perfil encontrado
+                            profiles.Remove(kvp.Key);
+                            perfilEliminado = true;
+                            break;
+                        }
                     }
                 }
+
+                // Si el perfil fue eliminado, escribir el JSON modificado de vuelta en el archivo
+                if (perfilEliminado)
+                {
+                    File.WriteAllText(perfilesPath, jsonObj.ToString(Formatting.Indented));
+                }
+
+
 
                 // Construir la ruta hacia la carpeta "AncientKraft" dentro de "versions"
                 string AncientKraftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "versions", "AncientKraft");
