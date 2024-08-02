@@ -53,14 +53,17 @@ namespace AutoInstall
         public Principal()
         {
             InitializeComponent();
-            CheckForProgramUpdates();
+            CheckMinecraftIsInstalled();
+            LoadCustomPath();
             // Obtener la versión actual del título de la ventana principal
             program_version = ObtenerVersion(this.Text);
             SaveProgramVersion();
-            InitializeProgressBar();
+            CheckModpackIsInstalled();
             LoadModpackVersion();
+            CheckForProgramUpdates();
+
+            InitializeProgressBar();
             animationTimer = new System.Windows.Forms.Timer();
-            LoadCustomPath();
 
 
             // Crear el objeto ToolTip
@@ -75,6 +78,34 @@ namespace AutoInstall
 
             // Asociar el ToolTip al control PictureBox6
             toolTip.SetToolTip(pictureBox6, "Ajustes...");
+        }
+
+        // Función para detectar si Minecraft está instalado
+        private string CheckMinecraftIsInstalled()
+        {
+            // Obtiene la ruta de la carpeta .minecraft
+            string minecraftPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft");
+
+            // Comprueba si la carpeta .minecraft existe
+            if (!Directory.Exists(minecraftPath))
+            {
+                // Muestra un MessageBox de error al usuario si la carpeta no existe
+                MessageBox.Show(
+                    "No se ha detectado la carpeta .minecraft. Por favor, instale Minecraft o inícielo al menos una vez.",
+                    "Error: Minecraft No Encontrado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+
+                // Cierra la aplicación después de que el usuario haga clic en "OK"
+                Application.Exit();
+
+                // Retorna una cadena vacía, aunque el proceso se cerrará antes de usarla
+                return string.Empty;
+            }
+
+            // Si la carpeta existe, retorna la ruta
+            return minecraftPath;
         }
 
 
@@ -157,6 +188,26 @@ namespace AutoInstall
             catch (FileNotFoundException)
             {
                 // No hacer nada, se usará la ruta predeterminada
+            }
+        }
+
+        private void CheckModpackIsInstalled()
+        {
+            // Especifica la ruta del archivo instalado.txt
+            string installedFilePath = Path.Combine(selectedPath, "installed.txt");
+
+            // Comprueba si el archivo existe
+            if (File.Exists(installedFilePath))
+            {
+                // Lee el contenido del archivo
+                string content = File.ReadAllText(installedFilePath);
+
+                // Comprueba si el contenido es "OK"
+                if (content.Trim() == "OK")
+                {
+                    // Cambia el texto del botón
+                    button1.Text = "REINSTALAR";
+                }
             }
         }
 
@@ -360,17 +411,6 @@ namespace AutoInstall
             pictureBox6.Enabled = false;
             this.ControlBox = false;
             Cursor = Cursors.WaitCursor;
-
-            string optionsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "options.txt"); // Ruta por defecto
-            string filePath = Path.Combine(selectedPath, "options.txt"); // Ruta a la que será copiado posteriormente
-            string modsPath = Path.Combine(selectedPath, "mods" + Path.DirectorySeparatorChar);
-
-            // Comprobar que options.txt existe
-            if (!File.Exists(optionsPath))
-            {
-                MessageBox.Show("Por favor, inicie su Launcher en cualquier versión al menos una vez y toque cualquier configuración gráfica, luego cierrelo e intentelo de nuevo...", "No se encontró archivo de configuración", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Environment.Exit(0);
-            }
 
             // Iniciar animación Descargando...
             button1.Text = animationSequence[animationIndex];
@@ -780,7 +820,7 @@ namespace AutoInstall
             var newProfile = new JObject
             {
                 ["created"] = "2024-03-08T20:18:06.251Z",
-                ["gameDir"] = @"C:\Users\krist\AppData\Roaming\.minecraft\_AncientKraft",
+                ["gameDir"] = @$"{selectedPath}",
                 ["icon"] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIElEQVRYR+2XsRHDIAxF7XlcuvBO9hqsYHZy4dIreI3kThfdgU4fhF2IIukCBL3/kQQZB+fP6Bx/eALwqUA37dm0+BfYDYACb9tWNGDfd543iTMtSpV7AGTKp2kqOnBdF81bnbA44AagJluMkRTO85w5cZ4nfV/XFTmkii054AZAgY/jUBXyIHIAzS/LolaH5kAfAHzWIQQiv+87c4TneRCdPa9L5jPR0IFuAGrK2IGaU48dcAPglpt0NBLb2geUfWw50A0A6v3yaGRVcG7U7gZYBeyAG4Bs6BIIOaAollvZcsATQMam1ozOGF19qO6LdoDN+gCQZYnuglrdP3bAE4Ch+YHCWSwfLHLc8txr+mPiDoAS/tW4yaZXESo//gN8Abal0iEPdkE5AAAAAElFTkSuQmCC",
                 ["javaArgs"] = javaArgs,
                 ["lastUsed"] = "2024-03-08T20:31:10.859Z",
