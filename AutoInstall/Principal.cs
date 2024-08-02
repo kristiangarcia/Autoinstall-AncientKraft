@@ -42,7 +42,7 @@ namespace AutoInstall
         private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/SckocFfrchZivmK/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
         //Distant Horizons (Optional)
-        private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/mNIkrYbmNlYSIiM/gatos.zip";
+        private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/fDlvItrUMnAdDYD/Distant_Horizons_server_data.zip";
 
         private string selectedPath = ""; // Variable para almacenar la ruta seleccionada por el usuario
         private System.Windows.Forms.Timer animationTimer;
@@ -483,7 +483,7 @@ namespace AutoInstall
                 DialogResult result = MessageBox.Show(
                     "¿Desea descargar Distant Horizons?\n\n" +
                     "Esta opción mejorará su experiencia permitiéndole ver más lejos en el juego.\n" +
-                    "Tenga en cuenta que descargará el mapa completo, lo que puede requerir más de 30 GB y podría tardar un tiempo considerable.\n\n" +
+                    "Tenga en cuenta que descargará el mapa completo, lo que puede requerir más de 50 GB y podría tardar un tiempo considerable.\n\n" +
                     "Nota: Esta descarga no es recomendable para PCs con bajos recursos.",
                     "Descargar Distant Horizons (recomendado)",
                     MessageBoxButtons.YesNo,
@@ -529,7 +529,7 @@ namespace AutoInstall
                             progressBarUI.Value = progress;
 
                             // Actualizar cada segundo
-                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
+                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(2))
                             {
                                 TimeSpan elapsedTime = DateTime.Now - startTime;
                                 double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
@@ -597,7 +597,7 @@ namespace AutoInstall
                             progressBarUI.Value = progress;
 
                             // Actualizar cada segundo
-                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
+                            if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(2))
                             {
                                 TimeSpan elapsedTime = DateTime.Now - startTime;
                                 double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
@@ -741,8 +741,8 @@ namespace AutoInstall
             string fileToDelete2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "librerias.zip");
             File.Delete(fileToDelete2);
 
-            // Eliminar el archivo distant_horizons.zip
-            string fileToDelete3 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ".minecraft", "distant_horizons.zip");
+            // Eliminar el archivo Distant_Horizons_server_data.zip
+            string fileToDelete3 = Path.Combine(selectedPath, "Distant_Horizons_server_data.zip");
 
             // Verificar si el archivo existe antes de intentar eliminarlo
             if (File.Exists(fileToDelete3))
@@ -863,7 +863,7 @@ namespace AutoInstall
                 using (HttpResponseMessage response = await client.GetAsync(distantHorizons_url, HttpCompletionOption.ResponseHeadersRead))
                 using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
                 {
-                    string distantFileToWriteTo = Path.Combine(selectedPath, "distant_horizons.zip");
+                    string distantFileToWriteTo = Path.Combine(selectedPath, "Distant_Horizons_server_data.zip");
                     using (Stream streamToWriteTo = File.Open(distantFileToWriteTo, FileMode.Create))
                     {
                         byte[] buffer = new byte[8192];
@@ -887,7 +887,7 @@ namespace AutoInstall
                                 progressBarUI.Value = progress;
 
                                 // Actualizar cada segundo
-                                if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(1))
+                                if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(2))
                                 {
                                     TimeSpan elapsedTime = DateTime.Now - startTime;
                                     double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
@@ -924,7 +924,7 @@ namespace AutoInstall
 
             button2.Text = "Extrayendo Distant Horizons...";
 
-                using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "distant_horizons.zip")))
+                using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "Distant_Horizons_server_data.zip")))
                 {
                     zip.ExtractProgress += (sender, e) =>
                     {
