@@ -39,7 +39,7 @@ namespace AutoInstall
         private string newModpackVersion = "";
 
         //Forge libraries + AncientKraft version
-        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/dOdnKoYrDLXhhOE/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
+        private string libraries_Url = "https://cloud.kristiansito.com/remote.php/dav/public-files/XZjuyPkeDncHRcz/librerias-47.3.0.zip"; // URL de dropbox de las libraries de Forge + Versions
 
         //Distant Horizons (Optional)
         private string distantHorizons_url = "https://cloud.kristiansito.com/remote.php/dav/public-files/fDlvItrUMnAdDYD/Distant_Horizons_server_data.zip";
