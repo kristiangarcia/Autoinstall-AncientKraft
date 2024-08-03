@@ -516,9 +516,12 @@ namespace AutoInstall
             if (File.Exists(distantFilePath))
             {
                 string userDecision = File.ReadAllText(distantFilePath).Trim();
-                downloadDistantHorizons = userDecision.Equals("true", StringComparison.OrdinalIgnoreCase);
+                // Si distant.txt contiene "true", NO queremos descargar
+                downloadDistantHorizons = !userDecision.Equals("true", StringComparison.OrdinalIgnoreCase);
             }
-            else
+
+            // Si el archivo no existe o contiene "false", mostrar el MessageBox
+            if (!File.Exists(distantFilePath) || downloadDistantHorizons)
             {
                 DialogResult result = MessageBox.Show(
                     "¿Desea descargar Distant Horizons?\n\n" +
@@ -531,7 +534,6 @@ namespace AutoInstall
                 );
 
                 downloadDistantHorizons = result == DialogResult.Yes;
-                File.WriteAllText(distantFilePath, downloadDistantHorizons.ToString().ToLower());
             }
 
             DateTime startTime; // Declarar startTime aquí
@@ -899,101 +901,113 @@ namespace AutoInstall
             {
                 button2.Text = "Descargando Distant Horizons...";
 
-                using (HttpClient client = new HttpClient())
-                using (HttpResponseMessage response = await client.GetAsync(distantHorizons_url, HttpCompletionOption.ResponseHeadersRead))
-                using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
+                try
                 {
-                    string distantFileToWriteTo = Path.Combine(selectedPath, "Distant_Horizons_server_data.zip");
-                    using (Stream streamToWriteTo = File.Open(distantFileToWriteTo, FileMode.Create))
+                    using (HttpClient client = new HttpClient())
+                    using (HttpResponseMessage response = await client.GetAsync(distantHorizons_url, HttpCompletionOption.ResponseHeadersRead))
+                    using (Stream streamToReadFrom = await response.Content.ReadAsStreamAsync())
                     {
-                        byte[] buffer = new byte[8192];
-                        long totalBytes = response.Content.Headers.ContentLength ?? -1;
-                        long downloadedBytes = 0;
-
-                        while (true)
+                        string distantFileToWriteTo = Path.Combine(selectedPath, "Distant_Horizons_server_data.zip");
+                        using (Stream streamToWriteTo = File.Open(distantFileToWriteTo, FileMode.Create))
                         {
-                            int bytesRead = await streamToReadFrom.ReadAsync(buffer, 0, buffer.Length);
-                            if (bytesRead == 0)
+                            byte[] buffer = new byte[8192];
+                            long totalBytes = response.Content.Headers.ContentLength ?? -1;
+                            long downloadedBytes = 0;
+
+                            while (true)
                             {
-                                break;
-                            }
-
-                            await streamToWriteTo.WriteAsync(buffer, 0, bytesRead);
-                            downloadedBytes += bytesRead;
-
-                            if (totalBytes > 0)
-                            {
-                                int progress = (int)(downloadedBytes * 100 / totalBytes);
-                                progressBarUI.Value = progress;
-
-                                // Actualizar cada segundo
-                                if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(2))
+                                int bytesRead = await streamToReadFrom.ReadAsync(buffer, 0, buffer.Length);
+                                if (bytesRead == 0)
                                 {
-                                    TimeSpan elapsedTime = DateTime.Now - startTime;
-                                    double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
-                                    double bytesPerSecondInMB = bytesPerSecond / (1024 * 1024); // Convertir a MB/s
-                                    double estimatedTimeRemaining = (totalBytes - downloadedBytes) / bytesPerSecond;
-
-                                    // Actualizar el Label con el tiempo restante
-                                    timeLabel.Text = $"Tiempo restante: {TimeSpan.FromSeconds(estimatedTimeRemaining):hh\\:mm\\:ss}";
-
-                                    // Actualizar el Label con la velocidad
-                                    speedLabel.Text = $"{bytesPerSecondInMB:F2} MB/s";
-
-                                    // Actualizar la ubicación de los Labels
-                                    timeLabel.Location = new Point(progressBarUI.Left - timeLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - timeLabel.Height / 2 - speedLabel.Height - 5);
-                                    speedLabel.Location = new Point(progressBarUI.Left - speedLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - speedLabel.Height / 2);
-
-                                    lastUpdateTime = DateTime.Now; // Actualizar el tiempo de la última actualización
+                                    break;
                                 }
-                            }
 
-                            // Registrar el progreso en el TextBox (si está visible)
-                            if (logTextBox.Visible)
-                            {
-                                string message = $"Descargando Distant Horizons: {downloadedBytes} / {totalBytes} bytes ({speedLabel.Text}, {timeLabel.Text})";
-                                Invoke((MethodInvoker)(() =>
+                                await streamToWriteTo.WriteAsync(buffer, 0, bytesRead);
+                                downloadedBytes += bytesRead;
+
+                                if (totalBytes > 0)
                                 {
-                                    logTextBox.AppendText(message + Environment.NewLine);
-                                    logTextBox.ScrollToCaret();
-                                }));
+                                    int progress = (int)(downloadedBytes * 100 / totalBytes);
+                                    progressBarUI.Value = progress;
+
+                                    // Actualizar cada segundo
+                                    if (DateTime.Now - lastUpdateTime > TimeSpan.FromSeconds(2))
+                                    {
+                                        TimeSpan elapsedTime = DateTime.Now - startTime;
+                                        double bytesPerSecond = downloadedBytes / elapsedTime.TotalSeconds;
+                                        double bytesPerSecondInMB = bytesPerSecond / (1024 * 1024); // Convertir a MB/s
+                                        double estimatedTimeRemaining = (totalBytes - downloadedBytes) / bytesPerSecond;
+
+                                        // Actualizar el Label con el tiempo restante
+                                        timeLabel.Text = $"Tiempo restante: {TimeSpan.FromSeconds(estimatedTimeRemaining):hh\\:mm\\:ss}";
+
+                                        // Actualizar el Label con la velocidad
+                                        speedLabel.Text = $"{bytesPerSecondInMB:F2} MB/s";
+
+                                        // Actualizar la ubicación de los Labels
+                                        timeLabel.Location = new Point(progressBarUI.Left - timeLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - timeLabel.Height / 2 - speedLabel.Height - 5);
+                                        speedLabel.Location = new Point(progressBarUI.Left - speedLabel.Width - 10, progressBarUI.Top + progressBarUI.Height / 2 - speedLabel.Height / 2);
+
+                                        lastUpdateTime = DateTime.Now; // Actualizar el tiempo de la última actualización
+                                    }
+                                }
+
+                                // Registrar el progreso en el TextBox (si está visible)
+                                if (logTextBox.Visible)
+                                {
+                                    string message = $"Descargando Distant Horizons: {downloadedBytes} / {totalBytes} bytes ({speedLabel.Text}, {timeLabel.Text})";
+                                    Invoke((MethodInvoker)(() =>
+                                    {
+                                        logTextBox.AppendText(message + Environment.NewLine);
+                                        logTextBox.ScrollToCaret();
+                                    }));
+                                }
                             }
                         }
                     }
-                }
 
-            button2.Text = "Extrayendo Distant Horizons...";
+                button2.Text = "Extrayendo Distant Horizons...";
 
-                using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "Distant_Horizons_server_data.zip")))
-                {
-                    zip.ExtractProgress += (sender, e) =>
+                    using (ZipFile zip = ZipFile.Read(Path.Combine(selectedPath, "Distant_Horizons_server_data.zip")))
                     {
-                        if (e.EventType == ZipProgressEventType.Extracting_AfterExtractEntry)
+                        zip.ExtractProgress += (sender, e) =>
                         {
-                            string message = $"Extrayendo Distant Horizons: {e.CurrentEntry.FileName}";
-                            Invoke((MethodInvoker)(() =>
+                            if (e.EventType == ZipProgressEventType.Extracting_AfterExtractEntry)
                             {
-                                logTextBox.AppendText(message + Environment.NewLine);
-                                logTextBox.ScrollToCaret();
-                            }));
-                        }
-                        else if (e.EventType == ZipProgressEventType.Extracting_EntryBytesWritten)
-                        {
-                            int progress = (int)(e.BytesTransferred * 100 / e.TotalBytesToTransfer);
-                            Invoke((MethodInvoker)(() => progressBarUI.Value = progress));
-
-                            if (logTextBox.Visible)
-                            {
-                                string message = $"Extrayendo Distant Horizons: {e.BytesTransferred} / {e.TotalBytesToTransfer} bytes";
+                                string message = $"Extrayendo Distant Horizons: {e.CurrentEntry.FileName}";
                                 Invoke((MethodInvoker)(() =>
                                 {
                                     logTextBox.AppendText(message + Environment.NewLine);
                                     logTextBox.ScrollToCaret();
                                 }));
                             }
-                        }
-                    };
-                    zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
+                            else if (e.EventType == ZipProgressEventType.Extracting_EntryBytesWritten)
+                            {
+                                int progress = (int)(e.BytesTransferred * 100 / e.TotalBytesToTransfer);
+                                Invoke((MethodInvoker)(() => progressBarUI.Value = progress));
+
+                                if (logTextBox.Visible)
+                                {
+                                    string message = $"Extrayendo Distant Horizons: {e.BytesTransferred} / {e.TotalBytesToTransfer} bytes";
+                                    Invoke((MethodInvoker)(() =>
+                                    {
+                                        logTextBox.AppendText(message + Environment.NewLine);
+                                        logTextBox.ScrollToCaret();
+                                    }));
+                                }
+                            }
+                        };
+                        zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
+                    }
+
+                    // Una vez completada la descarga y extracción exitosamente, marcar distant.txt como "true"
+                    File.WriteAllText(distantFilePath, "true");
+                    MessageBox.Show("Distant Horizons se ha descargado e instalado correctamente.", "Instalación Completa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error durante la descarga o extracción: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // En caso de error, no modificamos distant.txt
                 }
             }
 
