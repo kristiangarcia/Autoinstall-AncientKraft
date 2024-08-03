@@ -65,6 +65,8 @@ namespace AutoInstall
             InitializeProgressBar();
             animationTimer = new System.Windows.Forms.Timer();
 
+            FixDistant();
+
 
             // Crear el objeto ToolTip
             System.Windows.Forms.ToolTip toolTip = new System.Windows.Forms.ToolTip();
@@ -277,7 +279,32 @@ namespace AutoInstall
             }
         }
 
+        private void FixDistant()
+        {
+            // Nombre del directorio a buscar
+            string oldDirectoryName = "play%2Eluminakraft%2Ecom25983";
+            string oldDirectoryPath = Path.Combine(selectedPath, oldDirectoryName);
 
+            // Nombre del nuevo directorio
+            string newDirectoryName = "Distant_Horizons_server_data";
+            string newDirectoryPath = Path.Combine(selectedPath, newDirectoryName);
+
+            // Verifica si el directorio viejo existe
+            if (Directory.Exists(oldDirectoryPath))
+            {
+                // Verifica si el directorio nuevo ya existe, si no, lo crea
+                if (!Directory.Exists(newDirectoryPath))
+                {
+                    Directory.CreateDirectory(newDirectoryPath);
+                    Console.WriteLine($"Directorio creado: {newDirectoryPath}");
+                }
+
+                // Mueve el directorio viejo al nuevo directorio
+                string newOldDirectoryPath = Path.Combine(newDirectoryPath, oldDirectoryName);
+                Directory.Move(oldDirectoryPath, newOldDirectoryPath);
+                Console.WriteLine($"Directorio movido a: {newOldDirectoryPath}");
+            }
+        }
 
 
         private async Task DownloadAndUpdateProgram()
@@ -874,6 +901,71 @@ namespace AutoInstall
                 return $"-Xmx{javaMemory}G -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M";
             }
 
+            ////////////////////////////////////////
+            //FORZAR TEXTUREPACKS
+            ////////////////////////////////////////
+
+            // Ruta del archivo options.txt a actualizar
+            string optionsFilePath = Path.Combine(selectedPath, "options.txt");
+
+            // Ruta del archivo options.txt con las configuraciones
+            string defaultOptionsFilePath = Path.Combine(selectedPath, "config", "defaultoptions", "options.txt");
+
+            try
+            {
+                // Verifica si el archivo options.txt existe en selectedPath
+                if (File.Exists(optionsFilePath))
+                {
+                    // Verifica si el archivo options.txt con configuraciones existe
+                    if (File.Exists(defaultOptionsFilePath))
+                    {
+                        string[] defaultOptionsLines = File.ReadAllLines(defaultOptionsFilePath);
+                        string[] optionsLines = File.ReadAllLines(optionsFilePath);
+
+                        // Usa expresiones regulares para encontrar las líneas relevantes
+                        string? resourcePacksLine = null;
+                        string? incompatibleResourcePacksLine = null;
+
+                        foreach (string line in defaultOptionsLines)
+                        {
+                            if (line.Trim().StartsWith("resourcePacks:"))
+                            {
+                                resourcePacksLine = line.Trim();
+                            }
+                            else if (line.Trim().StartsWith("incompatibleResourcePacks:"))
+                            {
+                                incompatibleResourcePacksLine = line.Trim();
+                            }
+                        }
+
+                        using (StreamWriter writer = new StreamWriter(optionsFilePath, false))
+                        {
+                            foreach (string line in optionsLines)
+                            {
+                                if (line.Trim().StartsWith("resourcePacks:"))
+                                {
+                                    writer.WriteLine(resourcePacksLine ?? "resourcePacks:[]");
+                                }
+                                else if (line.Trim().StartsWith("incompatibleResourcePacks:"))
+                                {
+                                    writer.WriteLine(incompatibleResourcePacksLine ?? "incompatibleResourcePacks:[]");
+                                }
+                                else
+                                {
+                                    writer.WriteLine(line);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // Opcional: manejar excepciones de manera silenciosa o loguearlas en un archivo de registro si es necesario
+            }
+
+
+
             if (!downloadDistantHorizons)
             {
                 button2.Text = "Desactivando Distant Horizons...";
@@ -998,6 +1090,7 @@ namespace AutoInstall
                             }
                         };
                         zip.ExtractAll(selectedPath, ExtractExistingFileAction.OverwriteSilently);
+                        FixDistant();
                     }
 
                     // Una vez completada la descarga y extracción exitosamente, marcar distant.txt como "true"
